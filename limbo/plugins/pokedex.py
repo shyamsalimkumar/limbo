@@ -18,7 +18,8 @@ def pokedex(name):
     heading = name[0].upper() + name[1:]
 
     try:
-        description = soup.find("div", attrs={"class": "col desk-span-8 lap-span-6"}).text.strip()
+        description = soup.find("div", attrs={"class": "col desk-span-8 lap-span-6"}).text\
+            .strip().replace("PokÃ©mon", "Pokemon")
         basic_tabs = soup.find("ul", attrs={"class": "svtabs-panel-list"})
         tabs = basic_tabs.findAll("li", attrs={"class": "svtabs-panel"})
         current_tab = tabs[0]
@@ -43,6 +44,7 @@ def pokedex(name):
         message = Template("*$heading*\nDescription: $description\n$img\n$vital")\
             .substitute(heading=heading, description="_" + description + "_", img=img_url,
                         vital="\n".join([": ".join([x, vitals[x]]) for x in keys]))
+        print("Found %s", name)
     except AttributeError:
         print("Page parsing failed. 404 or API change")
     finally:
