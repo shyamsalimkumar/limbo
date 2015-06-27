@@ -14,7 +14,7 @@ def pokedex(name):
     url = "http://pokemondb.net/pokedex/{0}".format(name)
     soup = BeautifulSoup(requests.get(url).text)
 
-    message = ":monkey: Sorry, no matching pokemon found :monkey:"
+    message = ":monkey: Sorry, no matching pokemon found"
     heading = name[0].upper() + name[1:]
 
     try:
@@ -43,8 +43,9 @@ def pokedex(name):
 
         message = Template("*$heading*\nDescription: $description\n$img\n$vital")\
             .substitute(heading=heading, description="_" + description + "_", img=img_url,
-                        vital="\n".join([": ".join([x, vitals[x]]) for x in keys])).replace(u"PokÃ©mon", "Pokemon")
-        print("Found %s", name)
+                        vital="\n".join([": ".join([x, vitals[x]]) for x in keys]))\
+            .replace(u"\xc3\xa9", "e")
+        print("Found %s" % name)
     except AttributeError:
         print("Page parsing failed. 404 or API change")
     finally:
